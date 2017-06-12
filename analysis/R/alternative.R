@@ -14,6 +14,8 @@
 
 library(limSolve)
 library(Matrix)
+library(Cairo)
+library(foreach)
 
 # The next two functions create a matrix (G) and a vector (H) encoding
 # linear inequality constraints that a solution vector (x) must satisfy:
@@ -76,7 +78,7 @@ MakeLseiModel <- function(X, Y, stds) {
 # CustomLM(X, Y)
 ConstrainedLinModel <- function(X,Y) {
   model <- MakeLseiModel(X, Y$estimates, Y$stds)
-  coefs <- do.call(lsei, model)$X
+  coefs <- do.call(limSolve::lsei, list(model))$X
   names(coefs) <- colnames(X)
 
   coefs
